@@ -1,0 +1,20 @@
+{
+  "name": "testcase-grano",
+  "version": "1.0.0",
+  "description": "Single page Application in order to search the Finnish Business Information from provided Open Data by prh-fi",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amritg/testCase-Grano.git"
+  },
+  "author": "Amrit Gautam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amritg/testCase-Grano/issues"
+  },
+  "homepage": "https://github.com/amritg/testCase-Grano#readme"
+}
