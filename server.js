@@ -46,6 +46,6 @@ app.post('/api/companyinfo', function(req, res){
 
 //  Server Configuration
 
-app.listen(2000, function(){
-    console.log("App listening on port: 2000");
+app.listen(3000, function(){
+    console.log("App listening on port: 3000");
 });

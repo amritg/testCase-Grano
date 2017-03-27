@@ -1,7 +1,8 @@
-.container{
-    height: 100vh;
-    background-color: #E7ECEF;
+html, body {
+      background-color: #E7ECEF;
+      padding-bottom: 30px;
 }
+
 #headerContent{
     background-color: #274C77;
     color: white;
@@ -52,12 +53,14 @@ input:focus{
 #or{
     text-align: center;
 }
-#or>p{
+
+#or p{
     margin: 0px;
     font-size: 20px;
     font-family: 'Raleway', sans-serif;
 }
-.btn-search{
+
+.btn-search-global{
     background-color: #BD632F;
     color: white;
     width: 150px;
@@ -65,4 +68,32 @@ input:focus{
     border: 0px;
     border-radius: 3px;
     font-size: 20px;
+}
+.btn-search-individual{
+    background-color: #757780;
+    color: white;
+    width: 80px;
+    height: 30px;
+    border: 0px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.footer-content{
+    height: 60px;
+    color: white;
+    text-align: center;
+    background-color: #8B94A3;
+}
+
+.footer-content p{
+    padding-top: 20px; 
+    font-size: 16px;
+}
+
+#heart{
+    color: #b30000;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #E7ECEF inset!important;
 }

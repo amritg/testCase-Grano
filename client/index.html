@@ -11,40 +11,93 @@
     <link href="stylesheets/styles.css" rel="stylesheet">
 </head>
 <body ng-app="BusinessInfoFinder">
-    <div class="container" ng-controller="SearchController">
+    <div class="container-fluid" ng-controller="SearchController">
         <div class="row">
             <nav class="col-xs-12" id="headerContent">
                 <h1>Search Finnish Companies Info</h1>
-                <h2><i>from Open Data (PRH) for Business Information System</i></h2>
-                <p id="copyright">&copy; Finnish Patent and Registration Office</p>
+                <h2><i>from Open Data for Business Information System (BIS)</i></h2>
+                <p id="copyright">&copy; Finnish Patent and Registration Office (PRH)</p>
             </nav>
             <div class="col-xs-12 col-sm-12" id="bodyContent">
                 <form ng-submit="searchCompanyInfo();">
                     <div class="input-group">
                         <label for="searchByName">Enter Company's Name </label>
-                        <input type="text" class="inputbox" id="searchByName" placeholder="eg: Coriant Oy" autofocus ng-model="searchByName">
+                        <input type="text" class="inputbox" id="searchByName" placeholder="eg: Coriant Oy" autofocus ng-model="searchBy.name">
                     </div>
                     <div id="or">
-                        <p><i>OR</i></p>
+                        <p><b>OR</b></p>
                     </div>
                     <div class="input-group">
                         <label for="searchById">Enter Company's Business Id </label>
-                        <input type="text" class="inputbox" id="searchById" placeholder="eg: 0921290-7" ng-model="searchById">
+                        <input type="text" class="inputbox" id="searchById" placeholder="eg: 0921290-7" ng-model="searchBy.bId">
                     </div>
-                    <button type="submit" class="btn-search"> Search Now </button>
+                    <button type="submit" class="btn-search-global"> Search Now </button>
                 </form>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-12">
-                {{searchByName}}
-                {{searchById}}
-                {{data}}
+            <div class="col-xs-12 col-sm-10 col-sm-push-1 col-md-8 col-md-push-2" style="margin-top: 30px">
+                <div class="alert alert-danger" ng-show="error" style="text-align: center; font-size: 16px">
+                    <button type="button" class="close" ng-click="hideAlert()">&times;</button>
+                    {{error}} <i class="fa fa-frown-o" aria-hidden="true"></i>
+                </div>
+                
+                <div class="alert alert-success" ng-show="numberOfMatches" style="text-align: center; font-size: 16px">
+                    <button type="button" class="close" ng-click="hideAlert()">&times;</button>
+                    <strong> Yah!
+                        <ng-pluralize count="numberOfMatches"
+                            when="{
+                                '0' : '0 match is found',
+                                'one' : '1 match is found.',
+                                'other' : '{} matches are found.'
+                            }">
+                        </ng-pluralize>
+                    </strong><i class="fa fa-smile-o" aria-hidden="true"></i>
+                </div>
+
+                <div class="well" ng-show="singleMatch">
+                    <p><b>Company Name:</b> {{singleMatch.name}}</p>
+                    <p><b>Business ID:</b> {{singleMatch.businessId}}</p>
+                    <p><b>Company Form:</b> {{singleMatch.companyForm}}</p>
+                    <p ng-show="singleMatch.businessLines[2].name"><b>Business Lines: </b>{{singleMatch.businessLines[2].name}}</p>
+                    <p><b>Registration Date:</b> {{singleMatch.registrationDate}}</p>
+                    <p ng-show="singleMatch.languages[0]"><b>Languages:&nbsp;&nbsp;</b></p>
+                        <ol><li ng-repeat="language in singleMatch.languages">{{language.language}} </li></ol>
+                    <p ng-show="singleMatch.addresses[0]"><b>Address(es):</b></p>
+                        <ol><li ng-repeat="address in singleMatch.addresses | orderBy: '-registrationDate'">{{address.street}}, {{address.city}}, {{address.postCode}}, Registration Date: {{address.registrationDate}} </li></ol>
+                    <p><b>Former Name(s):</b></p>
+                        <ol><li ng-repeat="formerName in singleMatch.names | orderBy: '-registrationDate'">{{formerName.name}}, Registration Date: {{formerName.registrationDate}}</li></ol>   
+                </div>
+
+                <div class="well" ng-show="multipleMatch" ng-repeat="company in multipleMatch">
+                    <button class="btn-search-individual pull-right" ng-click="searchThisCompany(company.businessId);">
+                        More Info
+                    </button>
+                    <p>Company Name: {{company.name}}</p>
+                    <p>Business ID: {{company.businessId}}</p>
+                    <p>Registration Date: {{company.registrationDate}}</p>
+                    <p>Company Form: {{company.companyForm}}</p>
+                    
+                </div>
             </div>
         </div>
     </div>
-    
+    <footer class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container-fluid footer-content">
+               <p>Made with <i id="heart" class="fa fa-heart" aria-hidden="true"></i> By&nbsp;<u>Amrit Gautam</u></p>
+            </div>
+    </footer> 
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="javascripts/app.js"></script>
+    <script>
+        setInterval(function(){
+            var heart = document.getElementById('heart');
+            if(heart.style.visibility === 'hidden'){
+                heart.style.visibility = 'visible'
+            }else{
+                heart.style.visibility = 'hidden'
+            }
+        }, 700);
+    </script>
 </body>
 </html>
