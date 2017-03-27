@@ -4,6 +4,8 @@ html, body {
 }
 
 #headerContent{
+    position: fixed;
+    z-index: 999;
     background-color: #274C77;
     color: white;
     text-align: center;
@@ -31,6 +33,7 @@ html, body {
 }
 
 #form-content{
+    margin-top: 100px;
     color: black;
     text-align: center;
 }
