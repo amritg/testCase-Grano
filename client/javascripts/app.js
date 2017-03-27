@@ -1,7 +1,13 @@
 'use strict';
-console.log("JavaScript is loaded");
+
 angular.module('BusinessInfoFinder',[])
-    .controller('SearchController',['$scope','$http', function($scope,$http){
+    .controller('SearchController', SearchController)
+    .factory('CompanyInformationFactory', CompanyInformationFactory);
+
+    SearchController.$inject = ['$scope', '$http', 'CompanyInformationFactory'];
+    CompanyInformationFactory.$inject = ['$http'];
+
+    function SearchController($scope, $http, CompanyInformationFactory){
         $scope.searchBy = {
             name: "",
             bId: ""
@@ -16,19 +22,16 @@ angular.module('BusinessInfoFinder',[])
             $scope.numberOfMatches = null;
             if($scope.searchBy.name == "" && $scope.searchBy.bId == ""){
                 $scope.error = "Error: You must fill in 'ONE' of the Input Options in order to Search successfully";
-            }else{
-                $http.post('http://localhost:3000/api/companyinfo',{
-                    name: $scope.searchBy.name,
-                    bId: $scope.searchBy.bId
-                }).then(function(response){
-                    console.log(response.data);
-                    $scope.numberOfMatches = response.data.length;
+            }else {
+                CompanyInformationFactory.searchCompany($scope.searchBy).then(function (data){
+                    // console.log(data);
+                    $scope.numberOfMatches = data.length;
                     if($scope.numberOfMatches == 0){
                         $scope.error = "SORRY! We cannot find any Information in the database";
                     }else if($scope.numberOfMatches == 1){
-                        $scope.singleMatch = response.data[0];
+                        $scope.singleMatch = data[0];
                     }else{
-                        $scope.multipleMatch = response.data;
+                        $scope.multipleMatch = data;
                     }
                 });
             }
@@ -39,13 +42,20 @@ angular.module('BusinessInfoFinder',[])
             $scope.error = "";
             $scope.numberOfMatches = "";
         }
+
         $scope.searchThisCompany = function(bId) {
-            console.log(bId);
+            // console.log(bId);
             $scope.searchBy.name = "";
             $scope.searchBy.bId = bId;
             $scope.searchCompanyInfo();
         }
-    }])
-    .factory('', ['$http', function($http){
-        this.search
-    }]);
+    }
+
+    function CompanyInformationFactory($http) {
+        this.searchCompany = function (option){
+            return $http.post('/api/companyinfo/', option).then(function(response){
+                return response.data;
+            });
+        }
+        return this;
+    }

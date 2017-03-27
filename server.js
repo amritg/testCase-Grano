@@ -17,10 +17,10 @@ app.use(express.static(path.join(__dirname,'client')));
 
 // Routes
 
-app.get('/api/', function(req, res){
-    console.log('Get Request');
-    res.send("Hi amritg!");
-});
+// app.get('/api/', function(req, res){
+//     console.log('Get Request');
+//     res.send("Hi amritg!");
+// });
 
 app.post('/api/companyinfo', function(req, res){
     console.log('Post request');
@@ -36,8 +36,8 @@ app.post('/api/companyinfo', function(req, res){
         });
 
         response.on("end", function() {
-            console.log(rawData.length);
-            console.log(rawData);
+            // console.log(rawData.length);
+            // console.log(rawData);
             var parsedData = JSON.parse(rawData);
             res.json(parsedData.results);
         });
