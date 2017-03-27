@@ -11,7 +11,7 @@ html, body {
 }
 
 #headerContent>h1 {
-    margin-top: 25px;
+    margin-top: 12px;
     margin-bottom: 10px;
     font-size: 20px;
     font-family: 'Raleway', sans-serif;
@@ -20,12 +20,12 @@ html, body {
 #headerContent>h2 {
     margin-top: 0px;
     margin-bottom: 0px;
-    font-size: 15px;
+    font-size: 13px;
     font-family: 'Raleway', sans-serif;
 }
 
 #copyright {
-    font-size: 11px;
+    font-size: 9px;
     text-align: right;
     margin: 6px
 }
@@ -94,14 +94,14 @@ input:focus{
 }
 
 .footer-content{
-    height: 60px;
+    height: 50px;
     color: white;
     text-align: center;
     background-color: #8B94A3;
 }
 
 .footer-content p{
-    padding-top: 20px; 
+    padding-top: 15px; 
     font-size: 16px;
 }
 
