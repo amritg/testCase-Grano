@@ -25,14 +25,17 @@ angular.module('BusinessInfoFinder',[])
             }else {
                 CompanyInformationFactory.searchCompany($scope.searchBy).then(function (data){
                     // console.log(data);
-                    $scope.numberOfMatches = data.length;
-                    if($scope.numberOfMatches == 0){
-                        $scope.error = "SORRY! We cannot find any Information in the database";
-                    }else if($scope.numberOfMatches == 1){
-                        $scope.singleMatch = data[0];
-                    }else{
-                        $scope.multipleMatch = data;
+                    if(data.error){
+                        $scope.error = data.error;
+                    }else {
+                        $scope.numberOfMatches = data.length;
+                        if($scope.numberOfMatches == 1){
+                            $scope.singleMatch = data[0];
+                        }else{
+                            $scope.multipleMatch = data;
+                        }
                     }
+                    
                 });
             }
            

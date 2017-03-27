@@ -15,33 +15,58 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'client')));
 
-// Routes
+// Rest APIs
 
-// app.get('/api/', function(req, res){
+// app.get('/test/', function(req, res){
 //     console.log('Get Request');
 //     res.send("Hi amritg!");
 // });
 
-app.post('/api/companyinfo', function(req, res){
+app.post('/api/companyinfo/', function(req, res, next){
     console.log('Post request');
-    
     const URL = 'http://avoindata.prh.fi/opendata/bis/v1/?name=' + req.body.name + '&businessId=' + req.body.bId;
     console.log(URL);
     
     http.get(URL, function(response){
-        var rawData = "";
+        var statusCode = response.statusCode;
+        console.log(statusCode);
 
+        // if( statusCode !== 200){
+        //     console.log("Error code: " + statusCode);
+        //     var err = new Error("Something went wrong");
+        //     return next(err);
+        // }
+         if( statusCode == 404){
+            console.log("Error code: " + statusCode);
+            var err = new Error("Sorry! No match found. ");
+            return next(err);
+        }
+
+        var rawData = "";
         response.on("data", function (data) {
             rawData += data;
         });
 
         response.on("end", function() {
-            // console.log(rawData.length);
             // console.log(rawData);
             var parsedData = JSON.parse(rawData);
-            res.json(parsedData.results);
+            res.send(parsedData.results);
         });
     });
+});
+
+// Route for any GET request not already handled
+
+app.get('*', function(req, res, next) {
+  var err = new Error(' **** Invalid Link ****');
+  next(err);
+});
+
+//Error Middleware
+
+app.use(function (err, req, res, next) {
+    // console.log(err.message);
+    res.json({ error: err.message});
 });
 
 //  Server Configuration
